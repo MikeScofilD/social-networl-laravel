@@ -11,8 +11,13 @@
 |
 */
 
+
 Route::get('/', function () {
     return view('welcome');
 });
 
 Route::get('/','HomeController@index')->name('home');
+
+Route::get('/alert', function () {
+    return redirect()->route('home')->with('info', 'Вы можете войти!');
+});
