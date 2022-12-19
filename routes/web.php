@@ -24,3 +24,10 @@ Route::get('/','HomeController@index')->name('home');
 
 Route::get('/signup', 'AuthController@getSignUp')->name('auth.signup');
 Route::post('/signup', 'AuthController@postSignUp');
+
+Route::get('/signin', 'AuthController@getSignIn')->name('auth.signin');
+Route::post('/signin', 'AuthController@postSignIn');
+
+Route::get('/signout', 'AuthController@signOut')->name('auth.signout');;
+
+

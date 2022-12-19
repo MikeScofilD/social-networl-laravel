@@ -7,7 +7,7 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                {{-- @if (Auth::check()) --}}
+                @if (Auth::check())
                 <ul class="navbar-nav mr-auto">
                     <li class="nav-item active">
                         <a class="nav-link" href="#">Стена <span class="sr-only">(current)</span></a>
@@ -20,15 +20,15 @@
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
                     </form>
                 </ul>
-                {{-- @endif --}}
+                @endif
                 <ul class="navbar-nav ml-auto">
                     @if (Auth::check())
                         <li class="nav-item"><a href="" class="nav-link">{{Auth::user()->getNameOrUserName()}}</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Обновить профиль</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Выйти</a></li>
+                        <li class="nav-item"><a href="{{route('auth.signout')}}" class="nav-link">Выйти</a></li>
                     @else
                         <li class="nav-item"><a href="{{route('auth.signup')}}" class="nav-link">Зарегестрироватся</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Войти</a></li>
+                        <li class="nav-item"><a href="{{route('auth.signin')}}" class="nav-link">Войти</a></li>
                     @endif
                 </ul>
             </div>

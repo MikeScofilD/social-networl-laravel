@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
@@ -30,5 +31,28 @@ class AuthController extends Controller
         ]);
 
         return redirect()->route('home')->with('info', 'Вы упешкно зарегестрировались!');
+    }
+
+    public function getSignIn()
+    {
+        return view('auth.signin');
+    }
+    public function postSignIn(Request $request)
+    {
+        $this->validate($request, [
+            'email' => 'required',
+            'password' => 'required|min:6',
+        ]);
+        if (!Auth::attempt($request->only(['email', 'password']), $request->has('remember'))) {
+            return redirect()->back()->with('info', 'Не правельный логин или пароль');
+        }
+        return redirect()->route('home')->with('info', 'Вы вошли на сайта');
+        // dd($request);
+    }
+
+    public function signOut()
+    {
+        Auth::logout();
+        return redirect()->route('home');
     }
 }
