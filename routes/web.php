@@ -12,12 +12,15 @@
 */
 
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Route::get('/','HomeController@index')->name('home');
 
-Route::get('/alert', function () {
-    return redirect()->route('home')->with('info', 'Вы можете войти!');
-});
+// Route::get('/alert', function () {
+//     return redirect()->route('home')->with('info', 'Вы можете войти!');
+// });
+
+/**
+ * Авторизация
+ */
+
+Route::get('/signup', 'AuthController@getSignUp')->name('auth.signup');
+Route::post('/signup', 'AuthController@postSignUp');

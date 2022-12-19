@@ -27,7 +27,7 @@
                         <li class="nav-item"><a href="" class="nav-link">Обновить профиль</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Выйти</a></li>
                     @else
-                        <li class="nav-item"><a href="" class="nav-link">Зарегестрироватся</a></li>
+                        <li class="nav-item"><a href="{{route('auth.signup')}}" class="nav-link">Зарегестрироватся</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Войти</a></li>
                     @endif
                 </ul>
