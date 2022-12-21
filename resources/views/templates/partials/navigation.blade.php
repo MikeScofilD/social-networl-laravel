@@ -13,10 +13,10 @@
                         <a class="nav-link" href="#">Стена <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Друзья</a>
+                        <a class="nav-link" href="#">Друзья</a> 
                     </li>
-                    <form class="form-inline my-2 my-lg-0">
-                        <input class="form-control mr-sm-2" type="search" placeholder="Поиск..." aria-label="Search">
+                    <form method="GET" action="{{route('search.results')}}" class="form-inline my-2 my-lg-0">
+                        <input name="query" class="form-control mr-sm-2" type="search" placeholder="Поиск..." aria-label="Search">
                         <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Поиск</button>
                     </form>
                 </ul>

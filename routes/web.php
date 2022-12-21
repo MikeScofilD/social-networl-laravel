@@ -30,4 +30,10 @@ Route::post('/signin', 'AuthController@postSignIn')->middleware('guest');
 
 Route::get('/signout', 'AuthController@signOut')->name('auth.signout');;
 
+/**
+ * Поиск
+ */
+
+Route::get('/search', 'SearchController@getResults')->name('search.results');
+
 
