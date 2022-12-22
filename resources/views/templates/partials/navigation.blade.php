@@ -24,7 +24,7 @@
                 <ul class="navbar-nav ml-auto">
                     @if (Auth::check())
                         <li class="nav-item"><a href="{{route('profile.index', ['username' => Auth::user()->username])}}" class="nav-link">{{Auth::user()->getNameOrUserName()}}</a></li>
-                        <li class="nav-item"><a href="" class="nav-link">Обновить профиль</a></li>
+                        <li class="nav-item"><a href="{{route('profile.edit')}}" class="nav-link">Обновить профиль</a></li>
                         <li class="nav-item"><a href="{{route('auth.signout')}}" class="nav-link">Выйти</a></li>
                     @else
                         <li class="nav-item"><a href="{{route('auth.signup')}}" class="nav-link">Зарегестрироватся</a></li>
