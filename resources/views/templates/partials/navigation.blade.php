@@ -13,7 +13,7 @@
                         <a class="nav-link" href="#">Стена <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">Друзья</a> 
+                        <a class="nav-link" href="">Друзья</a>
                     </li>
                     <form method="GET" action="{{route('search.results')}}" class="form-inline my-2 my-lg-0">
                         <input name="query" class="form-control mr-sm-2" type="search" placeholder="Поиск..." aria-label="Search">
@@ -23,7 +23,7 @@
                 @endif
                 <ul class="navbar-nav ml-auto">
                     @if (Auth::check())
-                        <li class="nav-item"><a href="" class="nav-link">{{Auth::user()->getNameOrUserName()}}</a></li>
+                        <li class="nav-item"><a href="{{route('profile.index', ['username' => Auth::user()->username])}}" class="nav-link">{{Auth::user()->getNameOrUserName()}}</a></li>
                         <li class="nav-item"><a href="" class="nav-link">Обновить профиль</a></li>
                         <li class="nav-item"><a href="{{route('auth.signout')}}" class="nav-link">Выйти</a></li>
                     @else

@@ -36,4 +36,8 @@ Route::get('/signout', 'AuthController@signOut')->name('auth.signout');;
 
 Route::get('/search', 'SearchController@getResults')->name('search.results');
 
+/**
+ * Профили
+ */
+Route::get('/user/{username}', 'ProfileController@getProfile')->name('profile.index');
 
