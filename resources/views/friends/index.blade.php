@@ -16,7 +16,13 @@
         <div class="col-lg-6">
             <h3>Запросы в друзья</h3>
 
-            <img class="phone" src="{{ asset('img/tapor.jpg') }}" alt="tapor">
+            @if (!$friendRequest->count())
+                <h3>У вас нет заявок в друзья.</h3>
+            @else
+                @foreach ($friendRequest as $user)
+                    @include('user.partials.user_block')
+                @endforeach
+            @endif
         </div>
     </div>
 @endsection
