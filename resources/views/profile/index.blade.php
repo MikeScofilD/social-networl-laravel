@@ -13,7 +13,7 @@
             @elseif (Auth::user()->isFriendWith($user))
                 {{ $user->getFirstNameOrUserName() }} у вас в друзьях
             @else
-                <a href="" class="btn btn-primary mb-2">Добавить в друзья</a>
+                <a href="{{route('friend.add', ['username'=>$user->username])}}" class="btn btn-primary mb-2">Добавить в друзья</a>
             @endif
             <h3>{{ $user->getFirstNameOrUserName() }} Друзья: </h3>
 

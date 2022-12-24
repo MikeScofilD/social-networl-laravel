@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 
 class FriendController extends Controller
@@ -12,5 +12,27 @@ class FriendController extends Controller
         $friends = Auth::user()->friends();
         $friendRequest = Auth::user()->friendRequests();
         return view('friends.index', compact('friends', 'friendRequest'));
+    }
+
+    public function getAdd($username)
+    {
+        $user = User::where('username', $username)->first();
+
+        if (!$user) {
+            return redirect()->route('home')->with('info', 'Пользователь не найден');
+        }
+
+        if (Auth::user()->hasFriendRequestsPending($user) || $user->hasFriendRequestsPending(Auth::user())) {
+           return redirect()->route('profile.index', ['username' => $user->username])->with('info', 'Пользователю отправлен запрос в друзья');
+        }
+
+        if ( Auth::user()->isFriendWith($user)) {
+            return redirect()->route('profile.index', ['username' => $user->username])->with('info', 'Пользователь уже в друзьях');
+        }
+
+        Auth::user()->addFriend($user);
+
+        return redirect()->route('profile.index', ['username' => $username])->with('info', 'Пользователю отправлен запрос в друзья');
+
     }
 }
