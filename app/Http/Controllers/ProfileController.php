@@ -11,7 +11,6 @@ class ProfileController extends Controller
     public function getProfile($username)
     {
         $user = User::where('username', $username)->first();
-        // dd($user);
         if (!$user) {
             abort(404);
         }
