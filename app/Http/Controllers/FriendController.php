@@ -16,25 +16,25 @@ class FriendController extends Controller
 
     public function getAdd($username)
     {
-        $user = User::where('username', $username)->first();
+        $friend = User::where('username', $username)->first();
 
-        if (!$user) {
+        if (!$friend) {
             return redirect()->route('home')->with('info', 'Пользователь не найден');
         }
-        if(Auth::user()->id === $user->id)
+        if(Auth::user()->id === $friend->id)
         {
             return redirect()->route('home');
         }
 
-        if (Auth::user()->hasFriendRequestsPending($user) || $user->hasFriendRequestsPending(Auth::user())) {
-            return redirect()->route('profile.index', ['username' => $user->username])->with('info', 'Пользователю отправлен запрос в друзья');
+        if (Auth::user()->hasFriendRequestsPending($friend) || $friend->hasFriendRequestsPending(Auth::user())) {
+            return redirect()->route('profile.index', ['username' => $friend->username])->with('info', 'Пользователю отправлен запрос в друзья');
         }
 
-        if (Auth::user()->isFriendWith($user)) {
-            return redirect()->route('profile.index', ['username' => $user->username])->with('info', 'Пользователь уже в друзьях');
+        if (Auth::user()->isFriendWith($friend)) {
+            return redirect()->route('profile.index', ['username' => $friend->username])->with('info', 'Пользователь уже в друзьях');
         }
 
-        Auth::user()->addFriend($user);
+        Auth::user()->addFriend($friend);
 
         return redirect()->route('profile.index', ['username' => $username])->with('info', 'Пользователю отправлен запрос в друзья');
     }

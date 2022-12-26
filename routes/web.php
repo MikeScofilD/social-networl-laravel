@@ -52,4 +52,8 @@ Route::get('/friends', 'FriendController@getIndex')->middleware('auth')->name('f
 Route::get('/friends/add/{username}', 'FriendController@getAdd')->middleware('auth')->name('friend.add');
 Route::get('/friends/accept/{username}', 'FriendController@getAccept')->middleware('auth')->name('friend.accept');
 
+/**
+ * Стена
+ */
+Route::post('/status', 'StatusController@PostStatus')->middleware('auth')->name('status.post');
 

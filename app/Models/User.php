@@ -63,6 +63,12 @@ class User extends Authenticatable
         return asset('img/avatar.png');
     }
 
+    #Пользователяю пренадлежит статус
+    public function statuses()
+    {
+        return $this->hasMany('App\Models\Status', 'user_id');
+    }
+
     public function friendsOfMine()
     {
         return $this->belongsToMany('App\Models\User', 'friends', 'user_id', 'friend_id');
@@ -70,7 +76,7 @@ class User extends Authenticatable
 
     public function friendOf()
     {
-        return $this->belongsToMany('App\Models\User', 'friends', 'friend_id', 'user_id');
+        return $this->belongsToMany('App\Models\User', 'friends', 'user_id', 'friend_id');
     }
 
     public function friends()
@@ -106,13 +112,15 @@ class User extends Authenticatable
     #Добавить друга
     public function addFriend(User $user)
     {
+        // dd($user->id);
+        // return $this->friendOf()->attach($user->id);
         return $this->friendOf()->attach($user->id);
     }
 
     #Принять запрос на дружбу
     public function acceptFriendRequest(User $user)
     {
-       return $this->friendRequests()->where('id', $user->id)->first()->pivot->update(['accepted' => true]);
+        return $this->friendRequests()->where('id', $user->id)->first()->pivot->update(['accepted' => true]);
     }
 
     #Пользователь уже в друзьях
