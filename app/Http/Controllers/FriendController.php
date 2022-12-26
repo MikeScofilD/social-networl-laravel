@@ -11,13 +11,14 @@ class FriendController extends Controller
     {
         $friends = Auth::user()->friends();
         $friendRequest = Auth::user()->friendRequests();
+        // dd($friendRequest);
         return view('friends.index', compact('friends', 'friendRequest'));
     }
 
     public function getAdd($username)
     {
         $friend = User::where('username', $username)->first();
-
+        // dd($friend);
         if (!$friend) {
             return redirect()->route('home')->with('info', 'Пользователь не найден');
         }
@@ -42,7 +43,6 @@ class FriendController extends Controller
     public function getAccept($username)
     {
         $user = User::where('username', $username)->first();
-
         if (!$user) {
             return redirect()->route('home')->with('info', 'Пользователь не найден');
         }
@@ -53,5 +53,19 @@ class FriendController extends Controller
         Auth::user()->acceptFriendRequest($user);
 
         return redirect()->route('profile.index', ['username' => $username])->with('info', 'Запрос в друзья принят');
+    }
+
+    public function postDelete($username)
+    {
+        $user = User::where('username', $username)->first();
+        // dd($user->username);
+        if(!Auth::user()->isFriendWith($user))
+        {
+            return redirect()->back();
+        }
+
+        Auth::user()->deleteFriend($user);
+
+        return redirect()->back()->with('info', 'Друг удален');
     }
 }

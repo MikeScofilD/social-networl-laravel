@@ -58,36 +58,42 @@ class User extends Authenticatable
         return $this->first_name ?: $this->username;
     }
 
+    //Получить аватарку
     public function getAvatarUrl()
     {
         return asset('img/avatar.png');
     }
 
-    #Пользователяю пренадлежит статус
+    //Пользователяю пренадлежит статус
     public function statuses()
     {
         return $this->hasMany('App\Models\Status', 'user_id');
     }
 
+    //Отношения многие ко многим мои друзья
     public function friendsOfMine()
     {
-        return $this->belongsToMany('App\Models\User', 'friends', 'user_id', 'friend_id');
+        return $this->belongsToMany('App\Models\User', 'friends', 'friend_id', 'user_id');
     }
 
+    // Отношения многие ко многим, Друг
     public function friendOf()
     {
         return $this->belongsToMany('App\Models\User', 'friends', 'user_id', 'friend_id');
     }
 
+    //Получить друзей с обеих сторон
     public function friends()
     {
         return $this->friendsOfMine()->wherePivot('accepted', true)->get()
             ->merge($this->friendOf()->wherePivot('accepted', true)->get());
     }
 
+    //Запрос в друзья
     public function friendRequests()
     {
-        return $this->friendsOfMine()->wherePivot('accepted', false)->get();
+        // dd($this->friendsOfMine());
+       return $this->friendsOfMine()->wherePivot('accepted', false)->get();
     }
 
     #Запрос на ожидание друга
@@ -113,8 +119,14 @@ class User extends Authenticatable
     public function addFriend(User $user)
     {
         // dd($user->id);
-        // return $this->friendOf()->attach($user->id);
-        return $this->friendOf()->attach($user->id);
+       return $this->friendOf()->attach($user->id);
+    }
+
+    #Удалить друга
+    public function deleteFriend(User $user)
+    {
+        $this->friendOf()->detach($user->id);
+        $this->friendsOfMine()->detach($user->id);
     }
 
     #Принять запрос на дружбу

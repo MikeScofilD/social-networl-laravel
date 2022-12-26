@@ -15,7 +15,6 @@
         </div>
         <div class="col-lg-6">
             <h3>Запросы в друзья</h3>
-
             @if (!$friendRequest->count())
                 <h3>У вас нет заявок в друзья.</h3>
             @else
