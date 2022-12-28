@@ -41,6 +41,26 @@
                                 <li class="list-inline-item"><a href="">Лайк</a></li>
                                 <li class="list-inline-item">10 лайков</li>
                             </ul>
+                            @foreach ($status->replies as $reply)
+                                <div class="media">
+                                    {{-- {{dd($status->user->username)}} --}}
+                                    <a href="{{ route('profile.index', ['username' => $reply->user->username]) }}"
+                                        class="mr-3"><img class="media-object rounded avatar"
+                                            src="{{ $reply->user->getAvatarUrl() }}"
+                                            alt="{{ $reply->user->getNameOrUserName() }}"></a>
+                                    <div class="media-body">
+                                        <h4><a
+                                                href="{{ route('profile.index', ['username' => $reply->user->username]) }}">{{ $reply->user->getNameOrUserName() }}</a>
+                                        </h4>
+                                        <p>{{ $reply->body }}</p>
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">{{ $reply->created_at->diffForHumans() }}</li>
+                                            <li class="list-inline-item"><a href="">Лайк</a></li>
+                                            <li class="list-inline-item">10 лайков</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            @endforeach
                             <form action="{{ route('status.reply', ['statusId' => $status->id]) }}" method="POST"
                                 class="mb-4">
                                 @csrf
