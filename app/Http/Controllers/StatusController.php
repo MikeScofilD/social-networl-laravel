@@ -31,6 +31,7 @@ class StatusController extends Controller
         ]);
 
         $status = Status::notReply()->find($statusId);
+
         if (!$status) {
             return redirect()->route('home');
         }

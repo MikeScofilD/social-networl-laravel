@@ -5,6 +5,43 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+
+/**
+ * App\Models\User
+ *
+ * @property int $id
+ * @property string $email
+ * @property string $username
+ * @property string $password
+ * @property string|null $first_name
+ * @property string|null $last_name
+ * @property string|null $location
+ * @property string|null $remember_token
+ * @property \Illuminate\Support\Carbon|null $created_at
+ * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $friendOf
+ * @property-read int|null $friend_of_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|User[] $friendsOfMine
+ * @property-read int|null $friends_of_mine_count
+ * @property-read \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
+ * @property-read int|null $notifications_count
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Status[] $statuses
+ * @property-read int|null $statuses_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User newModelQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User newQuery()
+ * @method static \Illuminate\Database\Eloquent\Builder|User query()
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereEmail($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereFirstName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLastName($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereLocation($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User wherePassword($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereRememberToken($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
+ * @mixin \Eloquent
+ */
 class User extends Authenticatable
 {
     use Notifiable;
@@ -64,6 +101,7 @@ class User extends Authenticatable
         return asset('img/avatar.png');
     }
 
+
     //Пользователяю пренадлежит статус
     public function statuses()
     {
@@ -93,7 +131,7 @@ class User extends Authenticatable
     public function friendRequests()
     {
         // dd($this->friendsOfMine());
-       return $this->friendsOfMine()->wherePivot('accepted', false)->get();
+        return $this->friendsOfMine()->wherePivot('accepted', false)->get();
     }
 
     #Запрос на ожидание друга
@@ -119,7 +157,7 @@ class User extends Authenticatable
     public function addFriend(User $user)
     {
         // dd($user->id);
-       return $this->friendOf()->attach($user->id);
+        return $this->friendOf()->attach($user->id);
     }
 
     #Удалить друга
@@ -136,6 +174,7 @@ class User extends Authenticatable
     }
 
     #Пользователь уже в друзьях
+
     public function isFriendWith(User $user)
     {
         return (bool) $this->friends()->where('id', $user->id)->count();
