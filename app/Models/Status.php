@@ -50,6 +50,6 @@ class Status extends Model
     //Получить все like к записи
     public function likes()
     {
-        return $this->morphToMany('App\Models\Like', 'likeable');
+        return $this->morphMany('App\Models\Like', 'likeable');
     }
 }

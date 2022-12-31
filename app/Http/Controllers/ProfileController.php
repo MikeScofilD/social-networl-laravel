@@ -15,7 +15,6 @@ class ProfileController extends Controller
             abort(404);
         }
 
-
         $statuses = $user->statuses()->notReply()->get();
 
         return view('profile.index',[

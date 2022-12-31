@@ -6,7 +6,7 @@
             @include('user.partials.user_block')
             <hr>
             @if (!$statuses->count())
-               <p>{{$user->getFirstNameOrUserName()}} Пока ничего не опубликовал</p>
+                <p>{{ $user->getFirstNameOrUserName() }} Пока ничего не опубликовал</p>
             @else
                 @foreach ($statuses as $status)
                     <div class="media">
@@ -21,8 +21,7 @@
                             <p>{{ $status->body }}</p>
                             <ul class="list-inline">
                                 <li class="list-inline-item">{{ $status->created_at->diffForHumans() }}</li>
-                                <li class="list-inline-item"><a href="">Лайк</a></li>
-                                <li class="list-inline-item">10 лайков</li>
+
                             </ul>
                             @foreach ($status->replies as $reply)
                                 <div class="media">
@@ -38,33 +37,36 @@
                                         <p>{{ $reply->body }}</p>
                                         <ul class="list-inline">
                                             <li class="list-inline-item">{{ $reply->created_at->diffForHumans() }}</li>
-                                            <li class="list-inline-item"><a href="">Лайк</a></li>
-                                            <li class="list-inline-item">10 лайков</li>
+                                            @if ($reply->user->id !== Auth::user()->id)
+                                                <li class="list-inline-item"><a href="{{ route('status.like', ['statusId' => $reply->id]) }}">Лайк</a>
+                                                </li>
+                                                <li class="list-inline-item">10 лайков</li>
+                                            @endif
                                         </ul>
                                     </div>
                                 </div>
                             @endforeach
                             @if ($authUserIsFriend || Auth::user()->id === $status->user->id)
-                                            <form action="{{ route('status.reply', ['statusId' => $status->id]) }}" method="POST"
-                                class="mb-4">
-                                @csrf
-                                <div class="form-group">
-                                    <textarea name="reply-{{ $status->id }}" id="" cols="10" rows="2"
-                                        class="form-control {{ $errors->has("reply-{$status->id}") ? 'is-invalid' : '' }}" placeholder="Прокоментировать"
-                                        rows="3"></textarea>
-                                    @if ($errors->has("reply-{$status->id}"))
-                                        <div class="invalid-feedback">
-                                            {{ $errors->first("reply-{$status->id}") }}
-                                        </div>
-                                    @endif
-                                </div>
-                                <button type="submit" class="btn btn-primary btn-sm">Ответить</button>
-                            </form>
+                                <form action="{{ route('status.reply', ['statusId' => $status->id]) }}" method="POST"
+                                    class="mb-4">
+                                    @csrf
+                                    <div class="form-group">
+                                        <textarea name="reply-{{ $status->id }}" id="" cols="10" rows="2"
+                                            class="form-control {{ $errors->has("reply-{$status->id}") ? 'is-invalid' : '' }}" placeholder="Прокоментировать"
+                                            rows="3"></textarea>
+                                        @if ($errors->has("reply-{$status->id}"))
+                                            <div class="invalid-feedback">
+                                                {{ $errors->first("reply-{$status->id}") }}
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-sm">Ответить</button>
+                                </form>
                             @endif
                         </div>
                     </div>
                 @endforeach
-                {{-- {{ $statuses->links() }}  --}} 
+                {{-- {{ $statuses->links() }}  --}}
             @endif
         </div>
         <div class="col-lg-4 col-lg-offset-3">
@@ -82,7 +84,8 @@
                         value="Удалить из друзей">
                 </form>
             @elseif(Auth::user()->id !== $user->id)
-                <a href="{{ route('friend.add', ['username' => $user->username]) }}" class="btn btn-primary mb-2">Добавить в
+                <a href="{{ route('friend.add', ['username' => $user->username]) }}" class="btn btn-primary mb-2">Добавить
+                    в
                     друзья</a>
             @endif
             <h3>{{ $user->getFirstNameOrUserName() }} Друзья: </h3>

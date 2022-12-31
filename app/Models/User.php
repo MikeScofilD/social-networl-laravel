@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-
 /**
  * App\Models\User
  *
@@ -101,11 +100,17 @@ class User extends Authenticatable
         return asset('img/avatar.png');
     }
 
-
     //Пользователяю пренадлежит статус
     public function statuses()
     {
         return $this->hasMany('App\Models\Status', 'user_id');
+    }
+
+    // Получить Like пользователя
+
+    public function likes()
+    {
+        return $this->hasMany('App\Models\Like', 'user_id');
     }
 
     //Отношения многие ко многим мои друзья
@@ -178,5 +183,14 @@ class User extends Authenticatable
     public function isFriendWith(User $user)
     {
         return (bool) $this->friends()->where('id', $user->id)->count();
+    }
+
+    public function hasLikedStatus(Status $status)
+    {
+        return (bool) $status->likes()
+            ->where('likeable_id', $status->id)
+            ->where('likeable_type', get_class($status))
+            ->where('user_id', $this->id)
+            ->count();
     }
 }
