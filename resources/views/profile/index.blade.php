@@ -5,15 +5,24 @@
         <div class="col-lg-6">
             @include('user.partials.user_block')
             <hr>
+            @if (Auth::user()->id === $user->id)
+                <form action="{{ route('profile.upload-avatar', ['username' => Auth::user()->username]) }}" class="my-4"
+                    enctype="multipart/form-data" method="POST">
+                    @csrf
+                    <label for="">Загрузить аватар</label>
+                    <input type="file" name="avatar" id="avatar">
+                    <input type="submit" value="Загрузить" class="btn btn-primary" name="" id="">
+                </form>
+            @endif
             @if (!$statuses->count())
                 <p>{{ $user->getFirstNameOrUserName() }} Пока ничего не опубликовал</p>
             @else
                 @foreach ($statuses as $status)
                     <div class="media">
                         {{-- {{dd($status->user->username)}} --}}
-                        <a href="{{ route('profile.index', ['username' => $status->user->username]) }}" class="mr-3"><img
-                                class="media-object rounded avatar" src="{{ $status->user->getAvatarUrl() }}"
-                                alt="{{ $status->user->getNameOrUserName() }}"></a>
+                        <a href="{{ route('profile.index', ['username' => $status->user->username]) }}" class="mr-3">
+                            @include('user.partials.avatar')
+                        </a>
                         <div class="media-body">
                             <h4><a
                                     href="{{ route('profile.index', ['username' => $status->user->username]) }}">{{ $status->user->getNameOrUserName() }}</a>
@@ -23,11 +32,11 @@
                                 <li class="list-inline-item">{{ $status->created_at->diffForHumans() }}</li>
                                 @if ($status->user->id !== Auth::user()->id)
                                     <li class="list-inline-item">
-                                        {{$status->likes->count()}} {{Str::plural('like', $status->likes->count())}}
+                                        {{ $status->likes->count() }} {{ Str::plural('like', $status->likes->count()) }}
                                     </li>
                                 @endif
-                                  <li class="list-inline-item">{{ $status->likes()->count() }}
-                                        {{ Str::plural('like', $status->likes->count()) }}</li>
+                                <li class="list-inline-item">{{ $status->likes()->count() }}
+                                    {{ Str::plural('like', $status->likes->count()) }}</li>
                             </ul>
                             @foreach ($status->replies as $reply)
                                 <div class="media">

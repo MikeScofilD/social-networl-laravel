@@ -39,17 +39,19 @@
                             <ul class="list-inline">
                                 <li class="list-inline-item">{{ $status->created_at->diffForHumans() }}</li>
                                 @if ($status->user->id !== Auth::user()->id)
-                                    <li class="list-inline-item"><a href="{{ route('status.like', ['statusId' => $status->id]) }}">Лайк</a></li>
+                                    <li class="list-inline-item"><a
+                                            href="{{ route('status.like', ['statusId' => $status->id]) }}">Лайк</a></li>
                                 @endif
-                                 <li class="list-inline-item">{{$status->likes()->count()}} {{Str::plural('like', $status->likes->count())}}</li>
+                                <li class="list-inline-item">{{ $status->likes()->count() }}
+                                    {{ Str::plural('like', $status->likes->count()) }}</li>
                             </ul>
                             @foreach ($status->replies as $reply)
                                 <div class="media">
                                     {{-- {{dd($status->user->username)}} --}}
                                     <a href="{{ route('profile.index', ['username' => $reply->user->username]) }}"
-                                        class="mr-3"><img class="media-object rounded avatar"
-                                            src="{{ $reply->user->getAvatarUrl() }}"
-                                            alt="{{ $reply->user->getNameOrUserName() }}"></a>
+                                        class="mr-3">
+                                        @include('user.partials.avatar')
+                                    </a>
                                     <div class="media-body">
                                         <h4><a
                                                 href="{{ route('profile.index', ['username' => $reply->user->username]) }}">{{ $reply->user->getNameOrUserName() }}</a>
@@ -58,9 +60,12 @@
                                         <ul class="list-inline">
                                             <li class="list-inline-item">{{ $reply->created_at->diffForHumans() }}</li>
                                             @if ($reply->user->id !== Auth::user()->id)
-                                                <li class="list-inline-item"><a href="{{ route('status.like', ['statusId' => $reply->id]) }}">Лайк</a></li>
+                                                <li class="list-inline-item"><a
+                                                        href="{{ route('status.like', ['statusId' => $reply->id]) }}">Лайк</a>
+                                                </li>
                                             @endif
-                                              <li class="list-inline-item">{{$reply->likes()->count()}} {{Str::plural('like', $reply->likes->count())}}</li>
+                                            <li class="list-inline-item">{{ $reply->likes()->count() }}
+                                                {{ Str::plural('like', $reply->likes->count()) }}</li>
                                         </ul>
                                     </div>
                                 </div>

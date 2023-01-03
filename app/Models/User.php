@@ -40,6 +40,10 @@ use Illuminate\Notifications\Notifiable;
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUpdatedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|User whereUsername($value)
  * @mixin \Eloquent
+ * @property string|null $avatar
+ * @property-read \Illuminate\Database\Eloquent\Collection|\App\Models\Like[] $likes
+ * @property-read int|null $likes_count
+ * @method static \Illuminate\Database\Eloquent\Builder|User whereAvatar($value)
  */
 class User extends Authenticatable
 {
@@ -192,5 +196,27 @@ class User extends Authenticatable
             ->where('likeable_type', get_class($status))
             ->where('user_id', $this->id)
             ->count();
+    }
+
+    public function getAvatarsPath($user_id)
+    {
+        $path = "uploads/avatars/id{$user_id}";
+
+        if (!file_exists($path)) {
+            mkdir($path, 0777, true);
+        }
+        return "/$path/";
+    }
+
+    public function clearAvatars($user_id)
+    {
+        $path = "uploads/avatars/id{$user_id}";
+
+        if (file_exists(public_path("/$path"))) {
+            foreach(glob(public_path("/$path/*")) as $avatar){
+                unlink($avatar);
+            }
+        }
+
     }
 }

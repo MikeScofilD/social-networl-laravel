@@ -9,10 +9,9 @@
 | routes are loaded by the RouteServiceProvider within a group which
 | contains the "web" middleware group. Now create something great!
 |
-*/
+ */
 
-
-Route::get('/','HomeController@index')->name('home');
+Route::get('/', 'HomeController@index')->name('home');
 
 // Route::get('/alert', function () {
 //     return redirect()->route('home')->with('info', 'Вы можете войти!');
@@ -28,7 +27,7 @@ Route::post('/signup', 'AuthController@postSignUp')->middleware('guest');
 Route::get('/signin', 'AuthController@getSignIn')->middleware('guest')->name('auth.signin');
 Route::post('/signin', 'AuthController@postSignIn')->middleware('guest');
 
-Route::get('/signout', 'AuthController@signOut')->name('auth.signout');;
+Route::get('/signout', 'AuthController@signOut')->name('auth.signout');
 
 /**
  * Поиск
@@ -39,25 +38,31 @@ Route::get('/search', 'SearchController@getResults')->name('search.results');
 /**
  * Профили
  */
-Route::get('/user/{username}', 'ProfileController@getProfile')->name('profile.index');
-Route::get('/profile/edit', 'ProfileController@getEdit')->middleware('auth')->name('profile.edit');
-Route::post('/profile/edit', 'ProfileController@postEdit')->middleware('auth')->name('profile.edit');
 
+Route::get('/user/{username}', 'ProfileController@getProfile')->name('profile.index');
+
+Route::middleware(['auth', 'verified'])->prefix('profile')->name('profile.')->group(function () {
+    Route::get('/edit', 'ProfileController@getEdit')->name('edit');
+    Route::post('/edit', 'ProfileController@postEdit')->name('edit');
+    Route::post('/upload-avatar/{username}', 'ProfileController@postUploadAvatar')->name('upload-avatar');
+});
 
 /**
  * Друзья
  */
 
-Route::get('/friends', 'FriendController@getIndex')->middleware('auth')->name('friend.index');
-Route::get('/friends/add/{username}', 'FriendController@getAdd')->middleware('auth')->name('friend.add');
-Route::get('/friends/accept/{username}', 'FriendController@getAccept')->middleware('auth')->name('friend.accept');
-Route::post('/friends/delete/{username}', 'FriendController@postDelete')->middleware('auth')->name('friend.delete');
-
+Route::middleware(['auth', 'verified'])->prefix('friends')->name('friend.')->group(function () {
+    Route::get('/', 'FriendController@getIndex')->name('index');
+    Route::get('/add/{username}', 'FriendController@getAdd')->name('add');
+    Route::get('/accept/{username}', 'FriendController@getAccept')->name('accept');
+    Route::post('/delete/{username}', 'FriendController@postDelete')->name('delete');
+});
 
 /**
  * Стена
  */
-Route::post('/status', 'StatusController@PostStatus')->middleware('auth')->name('status.post');
-Route::post('/status/{statusId}/reply', 'StatusController@postReply')->middleware('auth')->name('status.reply');
-
-Route::get('status/{statusId}/like', 'StatusController@getLike')->middleware('auth')->name('status.like');
+Route::middleware(['auth', 'verified'])->prefix('status')->name('status.')->group(function () {
+    Route::post('/', 'StatusController@PostStatus')->middleware('auth')->name('post');
+    Route::post('/{statusId}/reply', 'StatusController@postReply')->name('reply');
+    Route::get('/{statusId}/like', 'StatusController@getLike')->name('like');
+});
