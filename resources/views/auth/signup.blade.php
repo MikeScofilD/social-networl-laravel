@@ -33,6 +33,16 @@
                         <span class="help-block text-danger">{{ $errors->first('password') }}</span>
                     @endif
                 </div>
+                <div class="form-group">
+                    <div class="row col-md-7">
+                        <select name="gender" class="custom-select @error('gender') is-invalid @enderror" id="">
+                            <option value="">Ваш пол</option>
+                            <option value="m" {{ old('gender') === 'm' ? 'selected' : '' }}>Мужчина</option>
+                            <option value="f" {{ old('gender') === 'f' ? 'selected' : '' }}>Женщина</option>
+                        </select>
+                        </select>
+                    </div>
+                </div>
                 <button type="submit" class="btn btn-primary">Создать аккаунт</button>
             </form>
         </div>

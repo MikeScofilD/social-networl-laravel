@@ -23,11 +23,14 @@ class AuthController extends Controller
             'email' => 'required|unique:users|email|max:255',
             'username' => 'required|unique:users|alpha_dash|max:20',
             'password' => 'required|min:6',
+            'gender' => 'required', 'string',
         ]);
+        // dd($request);
         User::create([
             'email' => $request->input('email'),
             'username' => $request->input('username'),
             'password' => bcrypt($request->input('password')),
+            'gender' => $request->input('gender'),
         ]);
 
         return redirect()->route('home')->with('info', 'Вы упешкно зарегестрировались!');

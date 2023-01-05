@@ -55,7 +55,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'email', 'username', 'password', 'first_name', 'last_name', 'location',
+        'email', 'username', 'password', 'first_name', 'last_name', 'location', 'gender',
     ];
 
     /**
@@ -213,10 +213,9 @@ class User extends Authenticatable
         $path = "uploads/avatars/id{$user_id}";
 
         if (file_exists(public_path("/$path"))) {
-            foreach(glob(public_path("/$path/*")) as $avatar){
+            foreach (glob(public_path("/$path/*")) as $avatar) {
                 unlink($avatar);
             }
         }
-
     }
 }
